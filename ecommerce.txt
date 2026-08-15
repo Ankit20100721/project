@@ -1,0 +1,205 @@
+
+Setting environment for using XAMPP for Windows.
+Dell@ANKIT c:\xampp
+# mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 17
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------------+
+| Database                 |
++--------------------------+
+| ecommerce                |
+| hospitalmanagementsystem |
+| information_schema       |
+| mysql                    |
+| performance_schema       |
+| phpmyadmin               |
+| test                     |
++--------------------------+
+7 rows in set (0.001 sec)
+
+MariaDB [(none)]> use ecommerce;
+Database changed
+MariaDB [ecommerce]> CREATE TABLE customer(
+    -> customerID INT PRIMARY KEY AUTO_INCREMENT,
+    -> name VARCHAR(50) NOT NULL,
+    -> email VARCHAR(30) NOT NULL,
+    -> phonenumber VARCHAR(20) NOT NULL,
+    -> address VARCHAR(30) NOT NULL
+    -> );
+Query OK, 0 rows affected (0.041 sec)
+
+MariaDB [ecommerce]> CREATE TABLE product(
+    -> productID INT PRIMARY KEY AUTO_INCREMENT,
+    -> productName VARCHAR(50) NOT NULL,
+    -> category VARCHAR(50),
+    -> price DECIMAL(10,2) NOT NULL,
+    -> stock INT NOT NULL
+    -> );
+Query OK, 0 rows affected (0.040 sec)
+
+MariaDB [ecommerce]> CREATE TABLE orders(
+    -> orderID INT auto_increment
+    -> category VARCHAR(50),;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'VARCHAR(50),' at line 3
+MariaDB [ecommerce]> CREATE TABLE orders(
+    -> orderID INT PRIMARY KEY AUTO_INCREMENT,
+    -> customerID INT FOREIGN KEY,
+    -> orderdate DATE,
+    -> status VARCHAR(50)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FOREIGN KEY,
+orderdate DATE,
+status VARCHAR(50)
+)' at line 3
+MariaDB [ecommerce]> CREATE TABLE orders(
+    -> orderID INT PRIMARY KEY AUTO_INCREMENT,
+    -> customerID INT,
+    -> orderdate DATE,
+    -> status VARCHAR(50),
+    -> FOREIGN KEY (customerID)
+    -> REFERENCES customer(customerID)
+    -> );
+Query OK, 0 rows affected (0.070 sec)
+
+MariaDB [ecommerce]> CREATE TABLE order_detail (
+    -> orderDetailID INT PRIMARY KEY AUTO_INCREMENT,
+    -> orderID INT,
+    -> productID INT,
+    -> quantity INT NOT NULL,
+    -> unitPrice DECIMAL(10,2),
+    -> FOREIGN KEY (orderID) REFERENCES orders(orderID),
+    -> FOREIGN KEY (productID) REFERENCES product(productID)
+    -> );
+Query OK, 0 rows affected (0.073 sec)
+
+MariaDB [ecommerce]> INSERT INTO customer (name, email, phNumber, address) VALUES
+    -> ('Kabir Sharma', 'kabir.sharma@gmail.com', '9890123456', 'Kathmandu'),
+    -> ('Emily Johnson', 'emily.johnson@gmail.com', '9801234567', 'Pokhara'),
+    -> ('Sujan Gurung', 'sujan.gurung@gmail.com', '9813456789', 'Lalitpur'),
+    -> ('Olivia Brown', 'olivia.brown@gmail.com', '9824567890', 'Bhaktapur'),
+    -> ('Arjun Karki', 'arjun.karki@gmail.com', '9835678901', 'Chitwan'),
+    -> ('Aisha Khan', 'aisha.khan@gmail.com', '9846789012', 'Biratnagar'),
+    -> ('Bibek Thapa', 'bibek.thapa@gmail.com', '9857890123', 'Butwal'),
+    ->
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 8
+MariaDB [ecommerce]> ('Kiran Poudel', 'kiran.poudel@gmail.com', '9879012345', 'Hetauda'),
+    -> ('Emma Davis', 'emma.davis@gmail.com', '9880123456', 'Janakpur'),
+    -> ('Sagar Shrestha', 'sagar.shrestha@gmail.com', '9891234567', 'Nepalgunj'),
+    -> ('Liam Anderson', 'liam.anderson@gmail.com', '9802345678', 'Dhangadhi'),
+    -> ('Pratik Joshi', 'pratik.joshi@gmail.com', '9813456789', 'Ilam'),
+    -> ('Isabella Martin', 'isabella.martin@gmail.com', '9824567890', 'Bharatpur'),
+    -> ('Roshan Tamang', 'roshan.tamang@gmail.com', '9835678901', 'Tansen'),
+    -> ('Zoe Taylor', 'zoe.taylor@gmail.com', '9846789012', 'Nagarkot');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''Kiran Poudel', 'kiran.poudel@gmail.com', '9879012345', 'Hetauda'),
+('Emma Da...' at line 1
+MariaDB [ecommerce]> INSERT INTO customer (name, email, phNumber, address) VALUES
+    -> ('Kiran Poudel', 'kiran.poudel@gmail.com', '9879012345', 'Hetauda'),
+    -> ('Emma Davis', 'emma.davis@gmail.com', '9880123456', 'Janakpur'),
+    -> ('Sagar Shrestha', 'sagar.shrestha@gmail.com', '9891234567', 'Nepalgunj'),
+    -> ('Liam Anderson', 'liam.anderson@gmail.com', '9802345678', 'Dhangadhi'),
+    -> ('Pratik Joshi', 'pratik.joshi@gmail.com', '9813456789', 'Ilam'),
+    -> ('Isabella Martin', 'isabella.martin@gmail.com', '9824567890', 'Bharatpur'),
+    -> ('Roshan Tamang', 'roshan.tamang@gmail.com', '9835678901', 'Tansen'),
+    -> ('Zoe Taylor', 'zoe.taylor@gmail.com', '9846789012', 'Nagarkot');
+ERROR 1054 (42S22): Unknown column 'phNumber' in 'field list'
+MariaDB [ecommerce]> INSERT INTO customer (name, email, phonenumber, address) VALUES)
+    -> ('Kiran Poudel', 'kiran.poudel@gmail.com', '9879012345', 'Hetauda'),
+    -> ('Emma Davis', 'emma.davis@gmail.com', '9880123456', 'Janakpur'),
+    -> ('Sagar Shrestha', 'sagar.shrestha@gmail.com', '9891234567', 'Nepalgunj'),
+    -> ('Liam Anderson', 'liam.anderson@gmail.com', '9802345678', 'Dhangadhi'),
+    -> ('Pratik Joshi', 'pratik.joshi@gmail.com', '9813456789', 'Ilam'),
+    -> ('Isabella Martin', 'isabella.martin@gmail.com', '9824567890', 'Bharatpur'),
+    -> ('Roshan Tamang', 'roshan.tamang@gmail.com', '9835678901', 'Tansen'),
+    -> ('Zoe Taylor', 'zoe.taylor@gmail.com', '9846789012', 'Nagarkot');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')
+('Kiran Poudel', 'kiran.poudel@gmail.com', '9879012345', 'Hetauda'),
+('Emma...' at line 1
+MariaDB [ecommerce]> INSERT INTO customer (name, email, phonenumber, address) VALUES
+    -> ('Kiran Poudel', 'kiran.poudel@gmail.com', '9879012345', 'Hetauda'),
+    -> ('Emma Davis', 'emma.davis@gmail.com', '9880123456', 'Janakpur'),
+    -> ('Sagar Shrestha', 'sagar.shrestha@gmail.com', '9891234567', 'Nepalgunj'),
+    -> ('Liam Anderson', 'liam.anderson@gmail.com', '9802345678', 'Dhangadhi'),
+    -> ('Pratik Joshi', 'pratik.joshi@gmail.com', '9813456789', 'Ilam'),
+    -> ('Isabella Martin', 'isabella.martin@gmail.com', '9824567890', 'Bharatpur'),
+    -> ('Roshan Tamang', 'roshan.tamang@gmail.com', '9835678901', 'Tansen'),
+    -> ('Zoe Taylor', 'zoe.taylor@gmail.com', '9846789012', 'Nagarkot');
+Query OK, 8 rows affected (0.030 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+MariaDB [ecommerce]> INSERT INTO product (productName, category, price, stock) VALUES
+    -> ('Wireless Mouse', 'Electronics', 1500, 25),
+    -> ('Mechanical Keyboard', 'Electronics', 4500, 15),
+    -> ('USB Flash Drive', 'Computer Accessories', 1200, 40),
+    -> ('Bluetooth Speaker', 'Audio', 3500, 20),
+    -> ('Laptop Backpack', 'Bags', 2800, 30),
+    -> ('Water Bottle', 'Accessories', 800, 50),
+    -> ('Desk Lamp', 'Home & Office', 1800, 18),
+    -> ('Notebook', 'Stationery', 250, 60);
+Query OK, 8 rows affected (0.032 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+MariaDB [ecommerce]> INSERT INTO orders (customerID,orderdate,status) VALUES
+    -> (1, '2026-08-01', 'Pending'),
+    -> (2, '2026-08-02', 'Completed'),
+    -> (3, '2026-08-03', 'Shipped'),
+    -> (4, '2026-08-04', 'Pending'),
+    -> (5, '2026-08-05', 'Completed'),
+    -> (6, '2026-08-06', 'Cancelled'),
+    -> (7, '2026-08-07', 'Shipped'),
+    -> (8, '2026-08-08', 'Processing');
+Query OK, 8 rows affected (0.033 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+MariaDB [ecommerce]> INSERT INTO order_detail (orderID, productID, quantity, unitPrice) VALUES
+    -> INSERT INTO order_detail (orderID, productID, quantity, unitPrice) VALUES
+    -> (1, 1, 2, 1500),
+    -> (2, 3, 1, 1200),
+    -> (3, 2, 1, 4500),
+    -> (4, 5, 2, 2800),
+    -> (5, 4, 1, 3500),
+    -> (6, 7, 3, 1800),
+    -> (7, 6, 2, 800),
+    -> (8, 8, 5, 250);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'INSERT INTO order_detail (orderID, productID, quantity, unitPrice) VALUES
+(1,...' at line 2
+MariaDB [ecommerce]> INSERT INTO order_detail (orderID, productID, quantity, unitPrice) VALUES
+    -> INSERT INTO order_detail (orderID, productID, quantity, unitPrice) VALUES
+    -> (1, 1, 2, 1500),
+    -> (2, 3, 1, 1200),
+    -> (3, 2, 1, 4500),
+    -> (4, 5, 2, 2800),
+    -> (5, 4, 1, 3500),
+    -> (6, 7, 3, 1800),
+    -> (7, 6, 2, 800),
+    -> (8, 8, 5, 250);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'INSERT INTO order_detail (orderID, productID, quantity, unitPrice) VALUES
+(1,...' at line 2
+MariaDB [ecommerce]> INSERT INTO order_detail (orderID, productID, quantity, unitPrice) VALUES
+    -> (1, 1, 2, 1500),
+    -> (2, 3, 1, 1200),
+    -> (3, 2, 1, 4500),
+    -> (4, 5, 2, 2800),
+    -> (5, 4, 1, 3500),
+    -> (6, 7, 3, 1800),
+    -> (7, 6, 2, 800),
+    -> (8, 8, 5, 250);
+Query OK, 8 rows affected (0.032 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+MariaDB [ecommerce]> show tables
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 2
+MariaDB [ecommerce]> shoew table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'shoew table' at line 1
+MariaDB [ecommerce]> show table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+MariaDB [ecommerce]>
